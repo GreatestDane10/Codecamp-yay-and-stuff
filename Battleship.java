@@ -15,7 +15,7 @@ public class Battleship {
         P1BoardPrint(P1ViewBoard, P1ShipBoard);
 
     }
-    public static void SetShipsStats(char[][] ShipBoard){
+    public static char[][] SetShipsStats(char[][] ShipBoard){
     Scanner scan = new Scanner(System.in);
     ArrayList<Integer> ShipsLeft=new ArrayList<Integer>();
     ShipsLeft.add(2);
@@ -24,26 +24,42 @@ public class Battleship {
     ShipsLeft.add(4);
     ShipsLeft.add(5);
     While(ShipsLeft.size()>0)
-        System.out.println("You are placing ship")
+        System.out.println("You are placing a ship" )
         System.out.println("which y coordinate would you like to start your ship of" + ShipSize + "at")
         int YCoordinate = scan.nextInt();
         System.out.println("which x coordinate would you like to start your ship of" + ShipSize + "at")
         int XCoordinate = scan.nextInt();
         System.out.println("Which derection would you like it going(Up, Down, Left, or Right)");
         String Direction = scan.nextLine().toLowerCase();
-        InBounds(XCoordinate, YCoordinate, ShipSize, Direction);
-        
-    }
-    public static boolean InBounds (int x,int y,int ShipSize,String Direction){
-       for(int d = 0;d<ShipSize;d++){
-            if(Direction==up){
-                if(XCoordinate+(ShipSize-1)<=10){
-                    System.out.println("That is out of bounds, please place again");
-                    
-                }
-            }
+        if (InBounds(XCoordinate, YCoordinate, ShipSize, Direction) == false){
+            continue;
         }
+
     }
+    public static char[][] PlaceShips(int x,int y,)
+    public static boolean InBounds (int x,int y,int ShipSize,String Direction){
+        if(x>9||y>9||x<0||y<0){
+            System.out.println("This is out of bounds, place again now");
+            return false;
+        }
+        if(Direction==up && y-(ShipSize+1)<0){
+                    System.out.println("That is out of bounds, please place again");
+                    return false;
+        }
+        if(Direction=="down"&& y+(ShipSize-1)>9){
+             System.out.println("That is out of bounds, please place again");
+            return false;
+        }
+        if(Direction=="left"&&x-(ShipSize-1)>0){
+            System.out.println("That is out of bounds, please place again");
+            return false;
+        }
+        if(Direction=="right"&&x+(ShipSize-1)>9){
+            System.out.println("That is out of bounds, please place again");
+            return false;
+        }
+        return true;
+        }
 
     public static void P1BoardPrint(char[][] ViewBoard, char[][] ShipBoard) {
         System.out.println("this is player 1s view board");
