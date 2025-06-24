@@ -23,20 +23,45 @@ public class Battleship {
     ShipsLeft.add(3);
     ShipsLeft.add(4);
     ShipsLeft.add(5);
-    While(ShipsLeft.size()>0)
-        System.out.println("You are placing a ship" )
-        System.out.println("which y coordinate would you like to start your ship of" + ShipSize + "at")
+    While(ShipsLeft.size()>0){
+        System.out.println("You are placing a ship with the lenght of" + ShipsLeft.get(0));
+        System.out.println("which y coordinate would you like to start your ship of" + ShipsLeft.get(0) + "at");
         int YCoordinate = scan.nextInt();
-        System.out.println("which x coordinate would you like to start your ship of" + ShipSize + "at")
+        System.out.println("which x coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
         int XCoordinate = scan.nextInt();
         System.out.println("Which derection would you like it going(Up, Down, Left, or Right)");
         String Direction = scan.nextLine().toLowerCase();
-        if (InBounds(XCoordinate, YCoordinate, ShipSize, Direction) == false){
+        if (InBounds(XCoordinate, YCoordinate, ShipSize, Direction) == false){//add to inbounds check is there is a ship already there
             continue;
         }
-
+        PlaceShips(XCoordinate,YCoordinate,ShipsLeft.get(0),Direction,ShipBoard);
+        ShipBoard=PlaceShips;
     }
-    public static char[][] PlaceShips(int x,int y,)
+    return ShipBoard;
+    }
+    public static char[][] PlaceShips(int x,int y,int lenght,string Direction, char[][] ShipBoard){
+        if(Direction="up"){
+            for(u=0;u<lenght;u++){
+                ShipBoard[x][y-u]='■';
+            }
+        }
+        if(Direction="down"){
+            for(d=0;u<lenght;u++){
+                ShipBoard[x][y+d]='■';
+            }
+        }
+        if(Direction="left"){
+            for(l=0;u<lenght;u++){
+                ShipBoard[x-l][y]='■';
+            }
+        }
+        if(Direction="right"){
+            for(u=0;r<lenght;u++){
+                ShipBoard[x+r][y]='■';
+            }
+        }
+        return ShipBoard;
+    }
     public static boolean InBounds (int x,int y,int ShipSize,String Direction){
         if(x>9||y>9||x<0||y<0){
             System.out.println("This is out of bounds, place again now");
