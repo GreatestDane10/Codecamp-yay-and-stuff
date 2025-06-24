@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Set;
 import java.util.ArrayList;
 
 public class Battleship {
@@ -13,6 +14,8 @@ public class Battleship {
         P1ViewBoard = CreateBoard();
         P2ViewBoard = CreateBoard();
         P1BoardPrint(P1ViewBoard, P1ShipBoard);
+        P1ShipBoard = SetShipsStats(P1ShipBoard);
+        P1BoardPrint(P1ViewBoard, P1ShipBoard);
 
     }
     public static char[][] SetShipsStats(char[][] ShipBoard){
@@ -23,40 +26,40 @@ public class Battleship {
     ShipsLeft.add(3);
     ShipsLeft.add(4);
     ShipsLeft.add(5);
-    While(ShipsLeft.size()>0){
-        System.out.println("You are placing a ship with the lenght of" + ShipsLeft.get(0));
-        System.out.println("which y coordinate would you like to start your ship of" + ShipsLeft.get(0) + "at");
+    while(ShipsLeft.size()>0){
+        System.out.println("You are placing a ship with the lenght of " + ShipsLeft.get(0));
+        System.out.println("which y coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
         int YCoordinate = scan.nextInt();
         System.out.println("which x coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
         int XCoordinate = scan.nextInt();
         System.out.println("Which derection would you like it going(Up, Down, Left, or Right)");
         String Direction = scan.nextLine().toLowerCase();
-        if (InBounds(XCoordinate, YCoordinate, ShipSize, Direction) == false){//add to inbounds check is there is a ship already there
+        if (InBounds(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction) == false){//add to inbounds check is there is a ship already there
             continue;
         }
-        PlaceShips(XCoordinate,YCoordinate,ShipsLeft.get(0),Direction,ShipBoard);
-        ShipBoard=PlaceShips;
+        ShipBoard=PlaceShips(XCoordinate,YCoordinate,ShipsLeft.get(0),Direction,ShipBoard);
+        ShipsLeft.remove(0);
     }
     return ShipBoard;
     }
-    public static char[][] PlaceShips(int x,int y,int lenght,string Direction, char[][] ShipBoard){
-        if(Direction="up"){
-            for(u=0;u<lenght;u++){
+    public static char[][] PlaceShips(int x,int y,int lenght,String Direction, char[][] ShipBoard){
+        if(Direction=="up"){
+            for(int u=0;u<lenght;u++){
                 ShipBoard[x][y-u]='■';
             }
         }
-        if(Direction="down"){
-            for(d=0;u<lenght;u++){
+        if(Direction=="down"){
+            for(int d=0;d<lenght;d++){
                 ShipBoard[x][y+d]='■';
             }
         }
-        if(Direction="left"){
-            for(l=0;u<lenght;u++){
+        if(Direction=="left"){
+            for(int l=0;l<lenght;l++){
                 ShipBoard[x-l][y]='■';
             }
         }
-        if(Direction="right"){
-            for(u=0;r<lenght;u++){
+        if(Direction=="right"){
+            for(int r=0;r<lenght;r++){
                 ShipBoard[x+r][y]='■';
             }
         }
@@ -67,7 +70,7 @@ public class Battleship {
             System.out.println("This is out of bounds, place again now");
             return false;
         }
-        if(Direction==up && y-(ShipSize+1)<0){
+        if(Direction=="up" && y-(ShipSize+1)<0){
                     System.out.println("That is out of bounds, please place again");
                     return false;
         }
