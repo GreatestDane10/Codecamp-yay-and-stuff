@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Battleship {
 
     public static void main(String[] args) {
+        String NintendoSwqich = "Hi";
         char[][] P1ShipBoard = new char[10][10];// make board
         char[][] P1ViewBoard = new char[10][10];// make board
         char[][] P2ShipBoard = new char[10][10];// make board
@@ -14,13 +15,14 @@ public class Battleship {
         P1ViewBoard = CreateBoard();
         P2ViewBoard = CreateBoard();
         P1BoardPrint(P1ViewBoard, P1ShipBoard);
-        P1ShipBoard = SetShipsStats(P1ShipBoard,P1ViewBoard);
+        P1ShipBoard = SetShipsStats(P1ShipBoard);
         P1BoardPrint(P1ViewBoard, P1ShipBoard);
 
     }
 
-    public static char[][] SetShipsStats(char[][] ShipBoard,char[][] ViewBoard) {
+    public static char[][] SetShipsStats(char[][] ShipBoard) {
         Scanner scan = new Scanner(System.in);
+        char[][] NewShipBoard= new char[10][10];
         ArrayList<Integer> ShipsLeft = new ArrayList<Integer>();
         ShipsLeft.add(2);
         ShipsLeft.add(3);
@@ -34,46 +36,48 @@ public class Battleship {
             System.out.println("which x coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
             int XCoordinate = scan.nextInt();
             System.out.println("Which derection would you like it going(Up, Down, Left, or Right)");
-            scan.nextLine();
             String Direction = scan.nextLine().toLowerCase();
+            Direction = scan.nextLine().toLowerCase();
             if (InBounds(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction) == false) {// add to inbounds check is
                                                                                            // there is a ship already
                                                                                            // there
                continue;
             }
-            ShipBoard = PlaceShips(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction, ShipBoard);
+            NewShipBoard = PlaceShips(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction, ShipBoard);
+            ShipBoard=NewShipBoard;
             ShipsLeft.remove(0);
             for(int z=0;z<10;z++){
                 for(int x=0;x<10;x++){
-                    System.out.print(ShipBoard[z][x]);
+                    System.out.print(NewShipBoard[z][x]+" ");
                 }
                 System.out.println();
             }
         }
-        return ShipBoard;
+        return NewShipBoard;
     }
 
     public static char[][] PlaceShips(int x, int y, int lenght, String Direction, char[][] ShipBoard) {
-        if (Direction == "up") {
+        if (Direction.equals("up")) {
             for (int u = 0; u < lenght; u++) {
-                ShipBoard[x][y - u] = '■';
+                ShipBoard[y - u][x] = '■';
             }
         }
-        if (Direction == "down") {
+        else if (Direction.equals("down")) {
             for (int d = 0; d < lenght; d++) {
-                ShipBoard[x][y + d] = '■';
+                ShipBoard[y + d][x] = '■';
             }
         }
-        if (Direction == "left") {
+        else if (Direction.equals("left")) {
             for (int l = 0; l < lenght; l++) {
-                ShipBoard[x - l][y] = '■';
+                ShipBoard[y][x - l] = '■';
             }
         }
-        if (Direction == "right") {
+        else if (Direction.equals("right")) {
             for (int r = 0; r < lenght; r++) {
-                ShipBoard[x + r][y] = '■';
+                ShipBoard[y][x + r] = '■';
             }
         }
+    }
         return ShipBoard;
     }
 
