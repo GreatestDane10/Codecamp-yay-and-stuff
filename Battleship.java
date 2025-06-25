@@ -22,7 +22,7 @@ public class Battleship {
 
     public static char[][] SetShipsStats(char[][] ShipBoard) {
         Scanner scan = new Scanner(System.in);
-        char[][] NewShipBoard= new char[10][10];
+        char[][] NewShipBoard = new char[10][10];
         ArrayList<Integer> ShipsLeft = new ArrayList<Integer>();
         ShipsLeft.add(2);
         ShipsLeft.add(3);
@@ -41,14 +41,14 @@ public class Battleship {
             if (InBounds(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction) == false) {// add to inbounds check is
                                                                                            // there is a ship already
                                                                                            // there
-               continue;
+                continue;
             }
             NewShipBoard = PlaceShips(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction, ShipBoard);
-            ShipBoard=NewShipBoard;
+            ShipBoard = NewShipBoard;
             ShipsLeft.remove(0);
-            for(int z=0;z<10;z++){
-                for(int x=0;x<10;x++){
-                    System.out.print(NewShipBoard[z][x]+" ");
+            for (int z = 0; z < 10; z++) {
+                for (int x = 0; x < 10; x++) {
+                    System.out.print(NewShipBoard[z][x] + " ");
                 }
                 System.out.println();
             }
@@ -61,24 +61,21 @@ public class Battleship {
             for (int u = 0; u < lenght; u++) {
                 ShipBoard[y - u][x] = '■';
             }
-        }
-        else if (Direction.equals("down")) {
+        } else if (Direction.equals("down")) {
             for (int d = 0; d < lenght; d++) {
                 ShipBoard[y + d][x] = '■';
             }
-        }
-        else if (Direction.equals("left")) {
+        } else if (Direction.equals("left")) {
             for (int l = 0; l < lenght; l++) {
                 ShipBoard[y][x - l] = '■';
             }
-        }
-        else if (Direction.equals("right")) {
+        } else if (Direction.equals("right")) {
             for (int r = 0; r < lenght; r++) {
                 ShipBoard[y][x + r] = '■';
             }
         }
-    }
-        return ShipBoard;
+    }return ShipBoard;
+
     }
 
     public static boolean InBounds(int x, int y, int ShipSize, String Direction) {
