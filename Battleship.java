@@ -78,23 +78,55 @@ public class Battleship {
     }
 
     public static boolean InBounds(int x, int y, int ShipSize, String Direction) {
+        if (Direction.equals("up")) {
+            for (int u = 0; u < lenght; u++) {
+                if(ShipBoard[y - u][x] == '■'){
+                    System.out.println("This overlaps with anouther ship please try again");
+                    return false;
+                }
+
+            }
+        }
+        else if(Direction.equals("down")) {
+            for (int d = 0; d < lenght; d++) {
+                if(ShipBoard[y + d][x] == '■'){
+                    System.out.println("This overlaps with anouther ship please try again");
+                    return false;
+                }
+            }
+        }
+         else if (Direction.equals("left")) {
+            for (int l = 0; l < lenght; l++) {
+                if(ShipBoard[y][x - l] = '■'){
+                    System.out.println("This overlaps with anouther ship please try again");
+                    return false;
+                }
+            }
+        } else if (Direction.equals("right")) {
+            for (int r = 0; r < lenght; r++) {
+                if(ShipBoard[y][x + r] == '■'){
+                    System.out.println("This overlaps with anouther ship please try again");
+                    return false;
+                }
+            }
+        }
         if (x > 9 || y > 9 || x < 0 || y < 0) {
             System.out.println("This is out of bounds, place again now");
             return false;
         }
-        if (Direction == "up" && y - (ShipSize + 1) < 0) {
+        if (Direction.equals("up") && y - (ShipSize + 1) < 0) {
             System.out.println("That is out of bounds, please place again");
             return false;
         }
-        if (Direction == "down" && y + (ShipSize - 1) > 9) {
+        if (Direction.equals("down") && y + (ShipSize - 1) > 9) {
             System.out.println("That is out of bounds, please place again");
             return false;
         }
-        if (Direction == "left" && x - (ShipSize - 1) > 0) {
+        if (Direction.equals("left") && x - (ShipSize - 1) > 0) {
             System.out.println("That is out of bounds, please place again");
             return false;
         }
-        if (Direction == "right" && x + (ShipSize - 1) > 9) {
+        if (Direction.equals("right") && x + (ShipSize - 1) > 9) {
             System.out.println("That is out of bounds, please place again");
             return false;
         }
