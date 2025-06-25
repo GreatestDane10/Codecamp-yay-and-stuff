@@ -37,7 +37,7 @@ public class Battleship {
             System.out.println("Which derection would you like it going(Up, Down, Left, or Right)");
             String Direction = scan.nextLine().toLowerCase();
             Direction = scan.nextLine().toLowerCase();
-            if (InBounds(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction) == false) {// add to inbounds check is
+            if (InBounds(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction, NewShipBoard) == false) {// add to inbounds check is
                                                                                            // there is a ship already
                                                                                            // there
                 continue;
@@ -77,9 +77,9 @@ public class Battleship {
 
     }
 
-    public static boolean InBounds(int x, int y, int ShipSize, String Direction) {
+    public static boolean InBounds(int x, int y, int ShipSize, String Direction, char[][] ShipBoard) {
         if (Direction.equals("up")) {
-            for (int u = 0; u < lenght; u++) {
+            for (int u = 0; u < ShipSize; u++) {
                 if(ShipBoard[y - u][x] == '■'){
                     System.out.println("This overlaps with anouther ship please try again");
                     return false;
@@ -88,7 +88,7 @@ public class Battleship {
             }
         }
         else if(Direction.equals("down")) {
-            for (int d = 0; d < lenght; d++) {
+            for (int d = 0; d < ShipSize; d++) {
                 if(ShipBoard[y + d][x] == '■'){
                     System.out.println("This overlaps with anouther ship please try again");
                     return false;
@@ -96,14 +96,14 @@ public class Battleship {
             }
         }
          else if (Direction.equals("left")) {
-            for (int l = 0; l < lenght; l++) {
-                if(ShipBoard[y][x - l] = '■'){
+            for (int l = 0; l < ShipSize; l++) {
+                if(ShipBoard[y][x - l] == '■'){
                     System.out.println("This overlaps with anouther ship please try again");
                     return false;
                 }
             }
         } else if (Direction.equals("right")) {
-            for (int r = 0; r < lenght; r++) {
+            for (int r = 0; r < ShipSize; r++) {
                 if(ShipBoard[y][x + r] == '■'){
                     System.out.println("This overlaps with anouther ship please try again");
                     return false;
