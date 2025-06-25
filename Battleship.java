@@ -16,9 +16,22 @@ public class Battleship {
         P1BoardPrint(P1ViewBoard, P1ShipBoard);
         P1ShipBoard = SetShipsStats(P1ShipBoard);
         P1BoardPrint(P1ViewBoard, P1ShipBoard);
+        Delay();
+        for(int i=0;i<100;i++){
+            System.out.println();
+        }
+        P2BoardPrint(P2ViewBoard, P2ShipBoard);
+        P2ShipBoard = SetShipsStats(P2ShipBoard);
+        P2BoardPrint(P2ViewBoard, P2ShipBoard);
+
 
     }
 
+    public static void Delay(){
+                Scanner scan = new Scanner(System.in);
+        System.out.println("Please press enter when you are ready to continue to the next players turn");
+        scan.nextLine();
+    }
     public static char[][] SetShipsStats(char[][] ShipBoard) {
         Scanner scan = new Scanner(System.in);
         char[][] NewShipBoard = new char[10][10];
@@ -114,7 +127,7 @@ public class Battleship {
             System.out.println("This is out of bounds, place again now");
             return false;
         }
-        if (Direction.equals("up") && y - (ShipSize + 1) < 0) {
+        if (Direction.equals("up") && (y - ShipSize) + 1 < 0) {
             System.out.println("That is out of bounds, please place again");
             return false;
         }
