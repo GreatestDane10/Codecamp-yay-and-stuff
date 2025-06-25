@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Battleship {
 
     public static void main(String[] args) {
-        String NintendoSwqich = "Hi";
         char[][] P1ShipBoard = new char[10][10];// make board
         char[][] P1ViewBoard = new char[10][10];// make board
         char[][] P2ShipBoard = new char[10][10];// make board
@@ -74,7 +73,7 @@ public class Battleship {
                 ShipBoard[y][x + r] = '■';
             }
         }
-    }return ShipBoard;
+    return ShipBoard;
 
     }
 
