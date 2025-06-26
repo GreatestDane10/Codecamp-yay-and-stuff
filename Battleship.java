@@ -101,20 +101,24 @@ public class Battleship {
                     for(i = 0;i<4;i++){
                 num = i+2;
                 notnum = (char) num;
-                    if (hit1[i]==i+1&&ShipNum2[y][x]==notnum);{
+                    if (hit1[i]==i+1&&ShipNum2[y][x]==notnum){
                         System.out.println("congradulations Sunk");
                     }
                 }
+            }
                 else if(player==2){
                     if(hit1[4]==2&&ShipNum1[y][x]=='6'){
                         System.out.println("congradulation sunk");
                     }
                     for(i=0;i<4;i++){
-                    else if (hit1[i]==i+1&&ShipNum2[y][x]==notnum);{
+                num = i+2;
+                notnum = (char) num;
+                    if (hit1[i]==i+1&&ShipNum1[y][x]==notnum){
                         System.out.println("congradulations Sunk");
                     }
                 }
             }
+
 
             ShipBoard[y][x]='¤';
             ViewBoard[y][x]='¤';
