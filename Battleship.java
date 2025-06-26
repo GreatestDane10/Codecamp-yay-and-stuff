@@ -1,68 +1,111 @@
 import java.util.Scanner;
-import java.util.Set;
+// import java.util.Set;
 import java.util.ArrayList;
 
 public class Battleship {
         static int P1PointsAwarded = 0;
         static int P2PointsAwarded = 0;
-        char[][] ShipNum = new char[10][10];
+        static char[][] ShipNum1 = new char[10][10];
+        static char[][] ShipNum2 = new char[10][10];
 
     public static void main(String[] args) {
         char[][] P1ShipBoard = new char[10][10];// make board
         char[][] P1ViewBoard = new char[10][10];// make board
         char[][] P2ShipBoard = new char[10][10];// make board
         char[][] P2ViewBoard = new char[10][10];// make board
+        ShipNum1 = CreateBoard();
+        ShipNum2 = CreateBoard();
         P1ShipBoard = CreateBoard();
         P2ShipBoard = CreateBoard();
         P1ViewBoard = CreateBoard();
         P2ViewBoard = CreateBoard();
-        //P1BoardPrint(P1ViewBoard, P1ShipBoard);
-       // P1ShipBoard = SetShipsStats(P1ShipBoard);
-       // P1BoardPrint(P1ViewBoard, P1ShipBoard);
+        P1BoardPrint(P1ViewBoard, P1ShipBoard);
+        P1ShipBoard = SetShipsStats(P1ShipBoard,1);
+       P1BoardPrint(ShipNum1, P1ShipBoard);
         Wait();
         ClearScreen();
         P2BoardPrint(P2ViewBoard, P2ShipBoard);
-        P2ShipBoard = SetShipsStats(P2ShipBoard);
+        P2ShipBoard = SetShipsStats(P2ShipBoard,2);
         P2BoardPrint(P2ViewBoard, P2ShipBoard);
         while(P1PointsAwarded<17&&P2PointsAwarded<17){
-            System.out.print("P1 ");
-            Guess(P1ViewBoard,P2ShipBoard,1);
+            Wait();
+            System.out.print("This is player 1s turn ");
+            P2BoardPrint(P1ViewBoard,P1ShipBoard);
+            ThreedArray[][][]=Guess(P1ViewBoard,P2ShipBoard,1);
+            P1ViewBoard =SetViewEqual(ThreedArray,P1ViewBoard);
+            P2ShipBoard = SetShipEqual(ThreedArray,P2SHipBOard);
+            Wait();
+            System.out.print("This is player 2s turn ");
+            P2BoardPrint(P2ViewBoard,P2ShipBoard);
+            ThreedArray = Guess(P2ViewBoard,P1ShipBoard,1);
+            P2ViewBoard = SetViewEqual(ThreedArray,P2ViewBoard);
+            P1ShipBoard = SetShipEqual(ThreedArray,P1ShipBoard);
+        }
+        public static char[][] SetViewEqual(char[][][] ThreedBoard,char[][] BoardNeedingSeting){
+            for(int a=0;a<10;a++){
+                for(int b =0; b<10;b++ ){
+                    BoardNeedingSeting[a][b]=ThreedBoard[1][a][b];
+                }
+            }
+        }
+        public static char[][] SetShipEqual(char[][][] ThreedBoard,BoardNeedingSeting){
+            for(int a=0;a<10;a++){
+                for(int b =0; b<10;b++ ){
+                    BoardNeedingSeting[a][b]=ThreedBoard[0][a][b];
+                }
+            }
+            
         }
 
     }
-    public static int[] Guess(char[][] ViewBoard,char[][] ShipBoard,int player){
+    public static char[][][] Guess(char[][] ViewBoard,char[][] ShipBoard,int player){
         Scanner scan = new Scanner(System.in);
+        char[][][] ThreedStorage = new char[2][10][10]
         System.out.println("Which x coord would you like your guess at");
         int x = scan.nextInt();
         System.out.println("Which y coord would you like your guess at");
         int y = scan.nextInt();
         if(ViewBoard[y][x]=='o'){
             System.out.println("you have already guessed there please guess again");
-            Guess(char[][] ViewBoard,char[][] ShipBoard);
+            Guess(ViewBoard,ShipBoard,player);
         }
         if(ShipBoard[y][x]=='■'){
             System.out.println("congradulations you hit");
             ShipBoard[y][x]='¤';
             ViewBoard[y][x]='¤';
-            if(player=1){
+            if(player==1){
             P1PointsAwarded = P1PointsAwarded + 1;
+            ShipNum1[y][x]='¤';
             }
             else{
                 P2PointsAwarded=P2PointsAwarded+1;
+                ShipNum2[y][x]='¤';
             }
         }
         else if(ShipBoard[y][x]=='□'){
             System.out.println("sorry you missed");
             ViewBoard[y][x]='o';
-            ShipBoard='o';
+            ShipBoard[y][x]='o';
         }
+            for(int two =0;two<10;two++){
+                for(int three; three<10;three++){
+                    ThreedStorage[0][two][three]=ShipBoard[two][three];
+                }
+            }
+            for(int two =0;two<10;two++){
+                for(int three; three<10;three++){
+                    ThreedStorage[1][two][three]=ViewBoard[two][three];
+                }
+            }
+            return ThreedStorage;
     }
     public static void Wait(){
         Scanner scan = new Scanner(System.in);
         System.out.println("Please press enter when you are ready to continue to the next players turn");
         scan.nextLine();
     }
-    public static char[][] SetShipsStats(char[][] ShipBoard) {
+    public static char[][] SetShipsStats(char[][] ShipBoard,int player) {
+        int ShipThreeNum=1;
         Scanner scan = new Scanner(System.in);
         char[][] NewShipBoard = new char[10][10];
         ArrayList<Integer> ShipsLeft = new ArrayList<Integer>();
@@ -72,6 +115,9 @@ public class Battleship {
         ShipsLeft.add(4);
         ShipsLeft.add(5);
         while (ShipsLeft.size() > 0) {
+                if(ShipThreeNum!=2){
+                ShipThreeNum = 1;
+                }
             System.out.println("You are placing a ship with the lenght of " + ShipsLeft.get(0));
             System.out.println("which x coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
             int XCoordinate = scan.nextInt();
@@ -85,7 +131,10 @@ public class Battleship {
                                                                                            // there
                 continue;
             }
-            NewShipBoard = PlaceShips(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction, ShipBoard);
+            NewShipBoard = PlaceShips(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction, ShipBoard,ShipThreeNum,player);
+                if(ShipsLeft.get(0)==3){
+                        ShipThreeNum++;
+                }
             ShipBoard = NewShipBoard;
             ShipsLeft.remove(0);
             System.out.print(" ");
@@ -104,23 +153,46 @@ public class Battleship {
         return NewShipBoard;
     }
 
-    public static char[][] PlaceShips(int x, int y, int lenght, String Direction, char[][] ShipBoard) {
+    public static char[][] PlaceShips(int x, int y, int lenght, String Direction, char[][] ShipBoard,int ShipThreeNum,int player) {
         if (Direction.equals("up")) {
             for (int u = 0; u < lenght; u++) {
                 ShipBoard[y - u][x] = '■';
-                ShipNum[y - u][x] = 
+                    if(player==1){
+                ShipNum1[y - u][x] = (""+lenght*ShipThreeNum).charAt(0);
+                        }
+                    else if(player==2){
+                ShipNum2[y - u][x] = (""+lenght*ShipThreeNum).charAt(0);
+                        }
             }
         } else if (Direction.equals("down")) {
             for (int d = 0; d < lenght; d++) {
                 ShipBoard[y + d][x] = '■';
+                    if(player==1){
+                ShipNum1[y + d][x]=(""+lenght*ShipThreeNum).charAt(0);
+                    }
+                    else if(player==2){
+                ShipNum2[y +d][x]=(""+lenght*ShipThreeNum).charAt(0);
+                    }
             }
         } else if (Direction.equals("left")) {
             for (int l = 0; l < lenght; l++) {
                 ShipBoard[y][x - l] = '■';
+                    if(player==1){
+                ShipNum1[y][x - 1] =(""+lenght*ShipThreeNum).charAt(0);
+                    }
+                    else if(player==2){
+                ShipNum2[y][x - 1] =(""+lenght*ShipThreeNum).charAt(0);
+                    }
             }
         } else if (Direction.equals("right")) {
             for (int r = 0; r < lenght; r++) {
                 ShipBoard[y][x + r] = '■';
+                    if(player==1){
+                ShipNum1[y][x + r] = (""+lenght*ShipThreeNum).charAt(0);
+                    }
+                    else if(player ==2){     
+                ShipNum2[y][x + r] = (""+lenght*ShipThreeNum).charAt(0);
+                    }
             }
         }
     return ShipBoard;
@@ -261,3 +333,5 @@ public class Battleship {
 // ■
 // □
 // ¤
+
+
