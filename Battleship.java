@@ -3,6 +3,9 @@ import java.util.Set;
 import java.util.ArrayList;
 
 public class Battleship {
+        static int P1PointsAwarded = 0;
+        static int P2PointsAwarded = 0;
+        char[][] ShipNum = new char[10][10];
 
     public static void main(String[] args) {
         char[][] P1ShipBoard = new char[10][10];// make board
@@ -13,22 +16,49 @@ public class Battleship {
         P2ShipBoard = CreateBoard();
         P1ViewBoard = CreateBoard();
         P2ViewBoard = CreateBoard();
-        P1BoardPrint(P1ViewBoard, P1ShipBoard);
-        P1ShipBoard = SetShipsStats(P1ShipBoard);
-        P1BoardPrint(P1ViewBoard, P1ShipBoard);
-        Delay();
-        for(int i=0;i<100;i++){
-            System.out.println();
-        }
+        //P1BoardPrint(P1ViewBoard, P1ShipBoard);
+       // P1ShipBoard = SetShipsStats(P1ShipBoard);
+       // P1BoardPrint(P1ViewBoard, P1ShipBoard);
+        Wait();
+        ClearScreen();
         P2BoardPrint(P2ViewBoard, P2ShipBoard);
         P2ShipBoard = SetShipsStats(P2ShipBoard);
         P2BoardPrint(P2ViewBoard, P2ShipBoard);
-
+        while(P1PointsAwarded<17&&P2PointsAwarded<17){
+            System.out.print("P1 ");
+            Guess(P1ViewBoard,P2ShipBoard,1);
+        }
 
     }
-
-    public static void Delay(){
-                Scanner scan = new Scanner(System.in);
+    public static int[] Guess(char[][] ViewBoard,char[][] ShipBoard,int player){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Which x coord would you like your guess at");
+        int x = scan.nextInt();
+        System.out.println("Which y coord would you like your guess at");
+        int y = scan.nextInt();
+        if(ViewBoard[y][x]=='o'){
+            System.out.println("you have already guessed there please guess again");
+            Guess(char[][] ViewBoard,char[][] ShipBoard);
+        }
+        if(ShipBoard[y][x]=='■'){
+            System.out.println("congradulations you hit");
+            ShipBoard[y][x]='¤';
+            ViewBoard[y][x]='¤';
+            if(player=1){
+            P1PointsAwarded = P1PointsAwarded + 1;
+            }
+            else{
+                P2PointsAwarded=P2PointsAwarded+1;
+            }
+        }
+        else if(ShipBoard[y][x]=='□'){
+            System.out.println("sorry you missed");
+            ViewBoard[y][x]='o';
+            ShipBoard='o';
+        }
+    }
+    public static void Wait(){
+        Scanner scan = new Scanner(System.in);
         System.out.println("Please press enter when you are ready to continue to the next players turn");
         scan.nextLine();
     }
@@ -43,10 +73,10 @@ public class Battleship {
         ShipsLeft.add(5);
         while (ShipsLeft.size() > 0) {
             System.out.println("You are placing a ship with the lenght of " + ShipsLeft.get(0));
-            System.out.println("which y coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
-            int YCoordinate = scan.nextInt();
             System.out.println("which x coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
             int XCoordinate = scan.nextInt();
+            System.out.println("which y coordinate would you like to start your ship of " + ShipsLeft.get(0) + " at");
+            int YCoordinate = scan.nextInt();
             System.out.println("Which derection would you like it going(Up, Down, Left, or Right)");
             String Direction = scan.nextLine().toLowerCase();
             Direction = scan.nextLine().toLowerCase();
@@ -58,10 +88,16 @@ public class Battleship {
             NewShipBoard = PlaceShips(XCoordinate, YCoordinate, ShipsLeft.get(0), Direction, ShipBoard);
             ShipBoard = NewShipBoard;
             ShipsLeft.remove(0);
-            for (int z = 0; z < 10; z++) {
-                for (int x = 0; x < 10; x++) {
-                    System.out.print(NewShipBoard[z][x] + " ");
-                }
+            System.out.print(" ");
+        for (int c = 0; c < 10; c++) {
+            System.out.print(c + " ");
+        }
+        System.out.println();
+        for (int a = 0; a < 10; a++) {
+            System.out.print(a + " ");
+            for (int b = 0; b < 10; b++) {
+                System.out.print(NewShipBoard[a][b] + " ");
+            }
                 System.out.println();
             }
         }
@@ -72,6 +108,7 @@ public class Battleship {
         if (Direction.equals("up")) {
             for (int u = 0; u < lenght; u++) {
                 ShipBoard[y - u][x] = '■';
+                ShipNum[y - u][x] = 
             }
         } else if (Direction.equals("down")) {
             for (int d = 0; d < lenght; d++) {
@@ -91,6 +128,26 @@ public class Battleship {
     }
 
     public static boolean InBounds(int x, int y, int ShipSize, String Direction, char[][] ShipBoard) {
+        if (x > 9 || y > 9 || x < 0 || y < 0) {
+            System.out.println("This is out of bounds, place again now");
+            return false;
+        }
+        if (Direction.equals("up") && (y - ShipSize) + 1 < 0) {
+            System.out.println("That is out of bounds, please place again");
+            return false;
+        }
+        if (Direction.equals("down") && y + (ShipSize - 1) > 9) {
+            System.out.println("That is out of bounds, please place again");
+            return false;
+        }
+        if (Direction.equals("left") && x - (ShipSize - 1) < 0) {
+            System.out.println("That is out of bounds, please place again");
+            return false;
+        }
+        if (Direction.equals("right") && x + (ShipSize - 1) > 9) {
+            System.out.println("That is out of bounds, please place again");
+            return false;
+        }
         if (Direction.equals("up")) {
             for (int u = 0; u < ShipSize; u++) {
                 if(ShipBoard[y - u][x] == '■'){
@@ -122,26 +179,6 @@ public class Battleship {
                     return false;
                 }
             }
-        }
-        if (x > 9 || y > 9 || x < 0 || y < 0) {
-            System.out.println("This is out of bounds, place again now");
-            return false;
-        }
-        if (Direction.equals("up") && (y - ShipSize) + 1 < 0) {
-            System.out.println("That is out of bounds, please place again");
-            return false;
-        }
-        if (Direction.equals("down") && y + (ShipSize - 1) > 9) {
-            System.out.println("That is out of bounds, please place again");
-            return false;
-        }
-        if (Direction.equals("left") && x - (ShipSize - 1) > 0) {
-            System.out.println("That is out of bounds, please place again");
-            return false;
-        }
-        if (Direction.equals("right") && x + (ShipSize - 1) > 9) {
-            System.out.println("That is out of bounds, please place again");
-            return false;
         }
         return true;
     }
@@ -215,6 +252,12 @@ public class Battleship {
         }
         return board;
     }
+    public static void ClearScreen() {  
+    for(int stuffandstuff=0;stuffandstuff<100;stuffandstuff++){
+        System.out.println("\n");
+    }
+}  
 }
 // ■
 // □
+// ¤
