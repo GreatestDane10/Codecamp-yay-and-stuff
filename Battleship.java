@@ -7,12 +7,15 @@ public class Battleship {
         static int P2PointsAwarded = 0;
         static char[][] ShipNum1 = new char[10][10];
         static char[][] ShipNum2 = new char[10][10];
+        static int[] hit1 = new int[5];
+        static int[] hit2 = new int[5];
 
     public static void main(String[] args) {
         char[][] P1ShipBoard = new char[10][10];// make board
         char[][] P1ViewBoard = new char[10][10];// make board
         char[][] P2ShipBoard = new char[10][10];// make board
         char[][] P2ViewBoard = new char[10][10];// make board
+        char[][][] ThreedArray = new char[2][10][10];
         ShipNum1 = CreateBoard();
         ShipNum2 = CreateBoard();
         P1ShipBoard = CreateBoard();
@@ -21,64 +24,108 @@ public class Battleship {
         P2ViewBoard = CreateBoard();
         P1BoardPrint(P1ViewBoard, P1ShipBoard);
         P1ShipBoard = SetShipsStats(P1ShipBoard,1);
-       P1BoardPrint(ShipNum1, P1ShipBoard);
+       P1BoardPrint(P1ViewBoard,P1ShipBoard );
         Wait();
         ClearScreen();
+        Wait();
         P2BoardPrint(P2ViewBoard, P2ShipBoard);
         P2ShipBoard = SetShipsStats(P2ShipBoard,2);
         P2BoardPrint(P2ViewBoard, P2ShipBoard);
         while(P1PointsAwarded<17&&P2PointsAwarded<17){
+        Wait();
+        ClearScreen();
             Wait();
-            System.out.print("This is player 1s turn ");
-            P2BoardPrint(P1ViewBoard,P1ShipBoard);
-            ThreedArray[][][]=Guess(P1ViewBoard,P2ShipBoard,1);
+            System.out.println("This is player 1s turn ");
+            P1BoardPrint(P1ViewBoard,P1ShipBoard);
+            ThreedArray=Guess(P1ViewBoard,P2ShipBoard,1);
             P1ViewBoard =SetViewEqual(ThreedArray,P1ViewBoard);
-            P2ShipBoard = SetShipEqual(ThreedArray,P2SHipBOard);
+            P2ShipBoard = SetShipEqual(ThreedArray,P2ShipBoard);
             Wait();
-            System.out.print("This is player 2s turn ");
+            ClearScreen();;
+            Wait();
+            System.out.println("This is player 2s turn ");
             P2BoardPrint(P2ViewBoard,P2ShipBoard);
-            ThreedArray = Guess(P2ViewBoard,P1ShipBoard,1);
+            ThreedArray = Guess(P2ViewBoard,P1ShipBoard,2);
             P2ViewBoard = SetViewEqual(ThreedArray,P2ViewBoard);
             P1ShipBoard = SetShipEqual(ThreedArray,P1ShipBoard);
         }
+        if(P1PointsAwarded>=17){
+        System.out.println("Congrats player one you win");
+        }
+        else if(P2PointsAwarded>=17){
+            System.out.println("COngrats player two you win");
+        }
+
+    }
+    
         public static char[][] SetViewEqual(char[][][] ThreedBoard,char[][] BoardNeedingSeting){
             for(int a=0;a<10;a++){
                 for(int b =0; b<10;b++ ){
                     BoardNeedingSeting[a][b]=ThreedBoard[1][a][b];
                 }
             }
+            return BoardNeedingSeting;
         }
-        public static char[][] SetShipEqual(char[][][] ThreedBoard,BoardNeedingSeting){
+        public static char[][] SetShipEqual(char[][][] ThreedBoard,char[][] BoardNeedingSeting){
             for(int a=0;a<10;a++){
                 for(int b =0; b<10;b++ ){
                     BoardNeedingSeting[a][b]=ThreedBoard[0][a][b];
                 }
             }
-            
+            return BoardNeedingSeting;
         }
-
-    }
     public static char[][][] Guess(char[][] ViewBoard,char[][] ShipBoard,int player){
         Scanner scan = new Scanner(System.in);
-        char[][][] ThreedStorage = new char[2][10][10]
+        char[][][] ThreedStorage = new char[2][10][10];
         System.out.println("Which x coord would you like your guess at");
         int x = scan.nextInt();
         System.out.println("Which y coord would you like your guess at");
         int y = scan.nextInt();
-        if(ViewBoard[y][x]=='o'){
+        if(y>9||y<0||x>9||x<0){
+            System.out.println("that is out of bounds please guess again");
+            Guess(ViewBoard,ShipBoard,player);
+        }
+        if(ViewBoard[y][x]=='o'||ViewBoard[y][x]=='¤'){
             System.out.println("you have already guessed there please guess again");
             Guess(ViewBoard,ShipBoard,player);
         }
         if(ShipBoard[y][x]=='■'){
+            int i;
+            int num;
+            char notnum;
             System.out.println("congradulations you hit");
+                if(player==1){
+                    if(hit1[4]==2&&ShipNum2[y][x]=='6'){
+                        System.out.println("congradulation sunk");
+                    }
+                    for(i = 0;i<4;i++){
+                num = i+2;
+                notnum = (char) num;
+                    if (hit1[i]==i+1&&ShipNum2[y][x]==notnum);{
+                        System.out.println("congradulations Sunk");
+                    }
+                }
+                else if(player==2){
+                    if(hit1[4]==2&&ShipNum1[y][x]=='6'){
+                        System.out.println("congradulation sunk");
+                    }
+                    for(i=0;i<4;i++){
+                    else if (hit1[i]==i+1&&ShipNum2[y][x]==notnum);{
+                        System.out.println("congradulations Sunk");
+                    }
+                }
+            }
+
             ShipBoard[y][x]='¤';
             ViewBoard[y][x]='¤';
             if(player==1){
             P1PointsAwarded = P1PointsAwarded + 1;
+            hit1[Character.getNumericValue(ShipNum1[y][x])-2]++;
             ShipNum1[y][x]='¤';
             }
             else{
                 P2PointsAwarded=P2PointsAwarded+1;
+            hit2[Character.getNumericValue(ShipNum1[y][x])-2]++;
                 ShipNum2[y][x]='¤';
             }
         }
@@ -88,12 +135,12 @@ public class Battleship {
             ShipBoard[y][x]='o';
         }
             for(int two =0;two<10;two++){
-                for(int three; three<10;three++){
+                for(int three=0; three<10;three++){
                     ThreedStorage[0][two][three]=ShipBoard[two][three];
                 }
             }
             for(int two =0;two<10;two++){
-                for(int three; three<10;three++){
+                for(int three=0; three<10;three++){
                     ThreedStorage[1][two][three]=ViewBoard[two][three];
                 }
             }
@@ -137,7 +184,7 @@ public class Battleship {
                 }
             ShipBoard = NewShipBoard;
             ShipsLeft.remove(0);
-            System.out.print(" ");
+            System.out.print("  ");
         for (int c = 0; c < 10; c++) {
             System.out.print(c + " ");
         }
@@ -252,6 +299,9 @@ public class Battleship {
                 }
             }
         }
+        if(Direction.equals("left")==false && Direction.equals("right")==false && Direction.equals("up")==false && Direction.equals("down")==false){
+            return false;
+        }
         return true;
     }
 
@@ -293,7 +343,7 @@ public class Battleship {
         }
         System.out.println();
         for (int a = 0; a < 10; a++) {
-            System.out.print(a + 1 + " ");
+            System.out.print(a + " ");
             for (int b = 0; b < 10; b++) {
                 System.out.print(ViewBoard[a][b] + " ");
             }
