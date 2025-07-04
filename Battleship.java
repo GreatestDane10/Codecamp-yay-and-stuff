@@ -83,14 +83,13 @@ public class Battleship {
         int y = scan.nextInt();
         if(y>9||y<0||x>9||x<0){
             System.out.println("that is out of bounds please guess again");
-            Guess(ViewBoard,ShipBoard,player);
+            return Guess(ViewBoard,ShipBoard,player);
         }
         if(ViewBoard[y][x]=='o'||ViewBoard[y][x]=='¤'){
             System.out.println("you have already guessed there please guess again");
             Guess(ViewBoard,ShipBoard,player);
         }
         if(ShipBoard[y][x]=='■'){
-            int i;
             int num;
             char notnum;
             System.out.println("congradulations you hit");
@@ -98,9 +97,19 @@ public class Battleship {
                     if(hit1[4]==2&&ShipNum2[y][x]=='6'){
                         System.out.println("congradulation sunk");
                     }
-                    for(i = 0;i<4;i++){
+                    for(int i = 0;i<4;i++){
                 num = i+2;
-                notnum = (char) num;
+                notnum = (char) (num+'0');//integers aren't stored as integers but in a diffrent way (ASCII) and if you want it to turn into a char for the integer you need it stored as an integer, I did this by adding it to '0' so the result is an integer stored as an integer
+                if(hit1[i]==i+1){
+                    System.out.println("it is on the last ship, and ship sunk is trigering when its on its last hit");
+                }
+                if(ShipNum2[y][x]==notnum){
+                    System.out.println("it is checking weather the last block is about to be hit");
+                }
+                else{
+                    System.out.println("it is not seing that the last block is being hit since" + ShipNum2[y][x] + " is not equal to" + notnum);
+                }
+                //test
                     if (hit1[i]==i+1&&ShipNum2[y][x]==notnum){
                         System.out.println("congradulations Sunk");
                     }
@@ -110,9 +119,9 @@ public class Battleship {
                     if(hit1[4]==2&&ShipNum1[y][x]=='6'){
                         System.out.println("congradulation sunk");
                     }
-                    for(i=0;i<4;i++){
+                    for(int i=0;i<4;i++){
                 num = i+2;
-                notnum = (char) num;
+                notnum = (char) (num + '0');
                     if (hit1[i]==i+1&&ShipNum1[y][x]==notnum){
                         System.out.println("congradulations Sunk");
                     }
@@ -129,9 +138,16 @@ public class Battleship {
             }
             else{
                 P2PointsAwarded=P2PointsAwarded+1;
-            hit2[Character.getNumericValue(ShipNum1[y][x])-2]++;
+            hit2[Character.getNumericValue(ShipNum2[y][x])-2]++;
                 ShipNum2[y][x]='¤';
             }
+            
+        for(int v=0;v<5;v++){
+            System.out.println("hit 1 ship #"+v+1+" is at "+hit1[v]+ " hits on ship");
+            System.out.println("hit 2 ship #"+v+1+" is at "+hit2[v]+ " hits on ship");
+        }
+        System.out.println(P1PointsAwarded);
+        System.out.println(P2PointsAwarded);
         }
         else if(ShipBoard[y][x]=='□'){
             System.out.println("sorry you missed");
